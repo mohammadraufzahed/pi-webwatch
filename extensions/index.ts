@@ -42,6 +42,10 @@ function save(w: Record<string, Watch>): void {
 	writeFileSync(FILE, JSON.stringify(w, null, 2));
 }
 
+function formatCheckedAt(checkedAt: number): string {
+	return checkedAt > 0 ? new Date(checkedAt).toISOString() : "never";
+}
+
 async function fetchItems(url: string): Promise<{ id: string; title: string; link: string }[]> {
 	const r = await fetch(url, { signal: AbortSignal.timeout(20_000) });
 	const xml = await r.text();
@@ -93,7 +97,7 @@ export default function piWebwatch(pi: ExtensionAPI) {
 				content: [{
 					type: "text" as const,
 					text: w.length
-						? w.map((x) => `- ${x.name} (${x.url})`).join("\n")
+						? w.map((x) => `- ${x.name} (${x.url}) — last checked: ${formatCheckedAt(x.checked_at)}`).join("\n")
 						: "(no watches)",
 				}],
 				details: null,
