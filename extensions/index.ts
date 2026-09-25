@@ -1,8 +1,8 @@
 /**
- * pi-webwatch — feed/page watching for pi agents.
+ * pi-webwatch — RSS/Atom feed watching for pi agents.
  *
- *   webwatch_add    — subscribe to an RSS/Atom feed or a URL
- *   webwatch_list   — active watches + last-seen
+ *   webwatch_add    — subscribe to an RSS/Atom feed
+ *   webwatch_list   — active watches + last checked timestamp
  *   webwatch_check  — poll now → new items since last check
  *   webwatch_remove — unsubscribe
  *
@@ -40,6 +40,10 @@ function load(): Record<string, Watch> {
 function save(w: Record<string, Watch>): void {
 	mkdirSync(DIR, { recursive: true });
 	writeFileSync(FILE, JSON.stringify(w, null, 2));
+}
+
+function formatCheckedAt(checkedAt: number): string {
+	return checkedAt > 0 ? new Date(checkedAt).toISOString() : "never";
 }
 
 async function fetchItems(url: string): Promise<{ id: string; title: string; link: string }[]> {
@@ -93,7 +97,7 @@ export default function piWebwatch(pi: ExtensionAPI) {
 				content: [{
 					type: "text" as const,
 					text: w.length
-						? w.map((x) => `- ${x.name} (${x.url})`).join("\n")
+						? w.map((x) => `- ${x.name} (${x.url}) — last checked: ${formatCheckedAt(x.checked_at)}`).join("\n")
 						: "(no watches)",
 				}],
 				details: null,
