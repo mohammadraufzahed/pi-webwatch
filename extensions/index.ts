@@ -78,7 +78,7 @@ export default function piWebwatch(pi: ExtensionAPI) {
 				checked_at: 0,
 			};
 			save(w);
-			return { content: [{ type: "text" as const, text: `watching ${p.url}` }] };
+			return { content: [{ type: "text" as const, text: `watching ${p.url}` }], details: null };
 		},
 	});
 
@@ -96,6 +96,7 @@ export default function piWebwatch(pi: ExtensionAPI) {
 						? w.map((x) => `- ${x.name} (${x.url})`).join("\n")
 						: "(no watches)",
 				}],
+				details: null,
 			};
 		},
 	});
@@ -128,6 +129,7 @@ export default function piWebwatch(pi: ExtensionAPI) {
 					type: "text" as const,
 					text: out.join("\n") || "(nothing new)",
 				}],
+				details: null,
 			};
 		},
 	});
@@ -141,7 +143,7 @@ export default function piWebwatch(pi: ExtensionAPI) {
 			const w = load();
 			delete w[p.url];
 			save(w);
-			return { content: [{ type: "text" as const, text: `removed ${p.url}` }] };
+			return { content: [{ type: "text" as const, text: `removed ${p.url}` }], details: null };
 		},
 	});
 }
