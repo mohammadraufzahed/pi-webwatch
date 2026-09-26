@@ -1,7 +1,7 @@
 /**
- * pi-webwatch — feed/page watching for pi agents.
+ * pi-webwatch — RSS/Atom feed watching for pi agents.
  *
- *   webwatch_add    — subscribe to an RSS/Atom feed or a URL
+ *   webwatch_add    — subscribe to an RSS/Atom feed
  *   webwatch_list   — active watches + last-seen
  *   webwatch_check  — poll now → new items since last check
  *   webwatch_remove — unsubscribe
